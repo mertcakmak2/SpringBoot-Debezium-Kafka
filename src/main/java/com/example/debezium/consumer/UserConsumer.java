@@ -1,6 +1,8 @@
 package com.example.debezium.consumer;
 
 import com.example.debezium.model.User;
+import com.example.debezium.mongoModel.MongoUser;
+import com.example.debezium.mongoRepository.UserMongoRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class UserConsumer {
 
     private final ObjectMapper mapper;
+    private final UserMongoRepository userMongoRepository;
 
     @KafkaListener(topics = "dbserver1.db.user")
     public void consumeUser(ConsumerRecord<String, String> record) throws JsonProcessingException {
@@ -25,7 +28,12 @@ public class UserConsumer {
 
         String userString = after.toString();
         User user = mapper.readValue(userString, User.class);
-        System.out.println(user.toString());
+
+        MongoUser mongoUser = MongoUser.builder()
+                .user(user)
+                .build();
+
+        userMongoRepository.save(mongoUser);
 
     }
 }

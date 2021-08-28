@@ -1,6 +1,24 @@
 version: "3.8"
 
 services:
+  mongo:
+    image: mongo:3
+    restart: always
+    ports:
+      - 27017:27017
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongouser
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    container_name: mongoexpress
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongouser
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongouser
   mysql:
     container_name: mysql
     image: debezium/example-mysql

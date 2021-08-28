@@ -5,8 +5,6 @@ import com.example.debezium.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
